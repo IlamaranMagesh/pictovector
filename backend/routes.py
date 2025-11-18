@@ -6,8 +6,6 @@ from flask import request, Blueprint, g
 import vercel_blob
 from uuid import uuid4
 
-from torch.distributed.elastic.multiprocessing.redirects import redirect
-
 from . import clients
 from .qdb import Image
 
@@ -29,7 +27,7 @@ def _wrap_image(urls: list[str]):
 load_env()
 bp = Blueprint('main', __name__)
 
-@bp.route('/upload', methods='POST')
+@bp.route('/upload', methods=['POST'])
 def upload():
     file = request.files['file']
     response = request.get_json()
