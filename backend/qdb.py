@@ -14,10 +14,12 @@ class Image:
     """
     image_bytes: bytes
     url: str
+    id: str
 
-    def __init__(self, image_bytes: bytes, url: str):
+    def __init__(self, image_bytes: bytes, url: str, id: str):
         self.image_bytes = image_bytes
         self.url = url
+        self.id = id
 
 class Qdb:
     """
@@ -50,7 +52,7 @@ class Qdb:
 
         self.vectors = [{"image": image, "description": desc.values} for image, desc in
                         zip(image_embeddings, text_embeddings)]
-        self.idx = [uuid.uuid4().__str__() for _ in images]
+        self.idx = [image.id for image in images]
         self.payloads = [{
             "uuid": uid,
             "tags": tag,
