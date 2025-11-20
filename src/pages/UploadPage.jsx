@@ -197,7 +197,7 @@ const UploadPage = () => {
                 >
                   <div className="relative">
                     <img
-                      src={`http://localhost:8000${img.url}`}
+                      src={`https://pictovector-lovat.vercel.app${img.url}`}
                       alt={img.filename}
                       className="w-full h-48 object-cover"
                     />

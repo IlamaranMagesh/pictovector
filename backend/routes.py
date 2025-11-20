@@ -1,13 +1,16 @@
+from crypt import methods
+
 from dotenv import load_dotenv
 import requests
 from qdrant_client import QdrantClient
 from google.genai import Client
-from flask import request, Blueprint, g
+from flask import request, Blueprint, g, jsonify
 import vercel_blob
 from uuid import uuid4
 
 from . import clients
-from .qdb import Image
+from .qdb import Image, Qdb
+from .llm import LLM
 
 genai_client: Client | None = None
 qdb_client: QdrantClient | None = None
@@ -25,14 +28,30 @@ def _wrap_image(urls: list[str]):
     return images
 
 load_env()
-bp = Blueprint('main', __name__)
+bp = Blueprint('main', __name__, url_prefix='/api')
 
-@bp.route('/upload', methods=['POST'])
+@bp.route('/images/upload', methods=['POST'])
 def upload():
     file = request.files['file']
     id = uuid4().__str__()
-    vercel_blob.put(id, file.read())
-    return "Uploaded"
+    extension = file.filename.split('.')[-1] if '.' in file.filename else 'bin'
+    filepath = f"images/{id}.{extension}"
+    file_data = file.read()
+
+    db = Qdb(qdb_client)
+    model = LLM(genai_client)
+
+    try:
+        response = vercel_blob.put(filepath, file_data)  # assuming only one image is uploaded
+        image = Image(image_bytes=file_data, url=response.get("url"), id=id)  # Todo: uuid should be added to Image
+        #db.upload(model, [image])
+        return jsonify({f"Images uploaded successfully. url: {response.get('url')}"}), 200
+    except Exception as msg:
+        return jsonify({f"{msg}"}), 500
+
+@bp.route('/search', methods=['GET'])
+def search():
+    pass
 
 if __name__ == '__main__':
     load_env()

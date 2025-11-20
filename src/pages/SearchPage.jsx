@@ -39,7 +39,7 @@ const SearchPage = () => {
       <div className="bg-white rounded-3xl max-w-6xl w-full max-h-[90vh] overflow-hidden shadow-2xl flex" onClick={(e) => e.stopPropagation()}>
         <div className="flex-1 bg-gray-900 flex items-center justify-center p-8">
           <img
-            src={`http://localhost:8000${image.url}`}
+            src={`https://pictovector-lovat.vercel.app${image.url}`}
             alt="Selected"
             className="max-h-full max-w-full object-contain rounded-xl"
           />
@@ -268,7 +268,7 @@ const SearchPage = () => {
                 onClick={() => setSelectedImage(image)}
               >
                 <img
-                  src={`http://localhost:8000${image.url}`}
+                  src={`https://pictovector-lovat.vercel.app${image.url}`}
                   alt={image.filename}
                   className="w-full h-64 object-cover"
                 />

@@ -1,7 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/(upload|search)",
+      "source": "/(.*)/(upload|search)",
       "destination": "/index.py"
     }
   ]
