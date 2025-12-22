@@ -45,13 +45,13 @@ export const imagesAPI = {
     });
   },
   getAll: (params, config = {}) => api.get('/images', { params, ...config }),
-  getById: (id, config = {}) => api.get(`/images/${id}`, config),
-  delete: (id, config = {}) => api.delete(`/images/${id}`, config),
+  getById: (id, config = {}) => api.get(`/images/${id}`, config), // Note: Not Implemented in frontend
+  delete: (id, config = {}) => api.delete(`/images/${id}`, config), // Note: Not Implemented in frontend
 };
 
 export const searchAPI = {
   search: (query, params = {}, config = {}) => {
-    const searchParams = typeof params === 'object' && !params.headers 
+    const searchParams = typeof params === 'object' && !params.headers
       ? { params: { query, ...params } }
       : { params: { query } };
     return api.get('/search', { ...searchParams, ...config });

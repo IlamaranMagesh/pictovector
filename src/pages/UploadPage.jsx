@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useImages } from '../context/ImagesContext';
 import { UserButton } from '@clerk/clerk-react';
 
+const BASE_URL = import.meta.env.VITE_URL;
+
 const UploadPage = () => {
   const navigate = useNavigate();
   const { uploadImage, uploadProgress, fetchImages } = useImages();
@@ -197,17 +199,18 @@ const UploadPage = () => {
                 >
                   <div className="relative">
                     <img
-                      src={`https://pictovector-lovat.vercel.app${img.url}`}
+                      src={`${img.url}`}
                       alt={img.filename}
                       className="w-full h-48 object-cover"
                     />
-                    
-                    <div className="absolute top-3 right-3">
-                      <div className={`px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 ${getStatusColor('complete')}`}>
-                        <Check className="w-4 h-4" />
-                        {Math.round(img.confidence * 100)}%
-                      </div>
-                    </div>
+{/*
+                     <div className="absolute top-3 right-3">
+                       <div className={`px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 ${getStatusColor('complete')}`}>
+                         <Check className="w-4 h-4" />
+                         {Math.round(img.confidence * 100)}%
+                       </div>
+                     </div>
+*/}
                   </div>
 
                   <div className="p-4">
@@ -221,7 +224,7 @@ const UploadPage = () => {
                         <span>Detected tags:</span>
                       </div>
                       <div className="flex flex-wrap gap-2">
-                        {img.tags.slice(0, 3).map((tag, idx) => (
+                        {img.tags?.slice(0, 3).map((tag, idx) => (
                           <span
                             key={idx}
                             className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-xs font-medium"

@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "api": "flask run --reload"
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.55.0",
@@ -31,5 +32,8 @@
     "postcss": "^8.4.0",
     "tailwindcss": "^3.4.0",
     "vite": "^7.2.2"
+  },
+  "engines":{
+    "node": ">=24.11.1"
   }
 }

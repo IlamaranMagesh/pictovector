@@ -4,9 +4,8 @@ import io
 from PIL import Image as PILImage
 from transformers import ResNetModel, AutoImageProcessor
 from typing import TYPE_CHECKING
-from google.genai.types import ContentEmbedding
 import torch
-from config import *
+from .constants import *
 
 if TYPE_CHECKING:
     from .qdb import Image
@@ -35,7 +34,6 @@ system_instruction = """
     Do not be creative.
     Provide top 10 tags.
 """
-
 
 class LLM:
     """
@@ -67,11 +65,11 @@ class LLM:
 
         return flattened_embed.tolist()
 
-    def txt_embed(self, descriptions: list[str]) -> list[ContentEmbedding]:
+    def txt_embed(self, descriptions: list[str]) -> list[float]:
         """
         Text Embedding from Gemini embedding model
         :param descriptions: list[str]
-        :return: list[ContentEmbedding]
+        :return: list[float]
         """
         result = self.client.models.embed_content(
             model=TEXT_EMBEDDING_MODEL,
@@ -81,7 +79,7 @@ class LLM:
                 "output_dimensionality": TEXT_EMBEDDING_SIZE,
             }
         )
-        return result.embeddings
+        return result.embeddings[0].values
 
     def image_to_caption(self, images: list['Image']) -> list[dict]:
         """
@@ -91,7 +89,7 @@ class LLM:
         """
         content = [image_to_caption_prompt] + \
                   [types.Part.from_bytes(data=image.image_bytes, mime_type="image/jpeg") for image in images]
-        # ToDo: Compress Images and standardise before sending in
+        #ToDo: Compress Images and standardise before sending in
 
         responses = self.client.models.generate_content(
             model=CHAT_MODEL,

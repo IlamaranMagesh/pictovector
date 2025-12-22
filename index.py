@@ -1,6 +1,7 @@
 """
-Instantiates the flask backend application for vercel
+Instantiates the flask api application for vercel
 """
-from backend import create_app
+from api import create_app
 
-app = create_app()
+if __name__ == '__main__':
+    app = create_app()

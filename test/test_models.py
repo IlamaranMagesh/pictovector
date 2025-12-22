@@ -1,17 +1,20 @@
 import unittest
 from dotenv import load_dotenv
 from pprint import pprint
-from backend.qdb import Image, Qdb
-from backend.llm import LLM
-from backend.routes import _wrap_image
+from api.qdb import Image, Qdb
+from api.llm import LLM
 import requests
 from datasets import load_dataset
 
-from backend.clients import get_qdb_client, get_genai_client
+from api.clients import get_qdb_client, get_genai_client
 
 load_dotenv()
 dataset = load_dataset("huggingface/cats-image")
 image = dataset["test"]["image"][0]
+
+def _wrap_image(urls: list[str]):
+    images = [Image(requests.get(url).content, url) for url in urls]
+    return images
 
 class MyTestCase(unittest.TestCase):
     model = LLM(get_genai_client())
@@ -20,8 +23,8 @@ class MyTestCase(unittest.TestCase):
         "https://images.pexels.com/photos/310435/pexels-photo-310435.jpeg",
         "https://images.pexels.com/photos/2406250/pexels-photo-2406250.jpeg"
     ]
-    images = _wrap_image(urls)
-    query_image = _wrap_image(["https://images.pexels.com/photos/949194/pexels-photo-949194.jpeg"])
+    #images = _wrap_image(urls)
+    #query_image = _wrap_image(["https://images.pexels.com/photos/949194/pexels-photo-949194.jpeg"])
 
     def test_sample(self):
         print(requests.get(self.urls[0]))
@@ -54,7 +57,7 @@ class MyTestCase(unittest.TestCase):
         self.db.upload(self.model, self.images)
 
     def test_query(self):
-        uuid = self.db.query_by_image(self.model, self.query_image)
+        uuid = self.db.query_by_text(self.model, "peacock")
         print(uuid)
 
     def test_delete(self):

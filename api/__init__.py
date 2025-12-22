@@ -1,13 +1,14 @@
-import os
 from flask import Flask
-from backend.clients import get_qdb_client, get_genai_client
+from .clients import get_qdb_client, get_genai_client
 
 def create_app(test_config = None):
     #Flask application
-    app = Flask(__name__, instance_relative_config=True)
+    app = Flask(__name__)
+    get_qdb_client()
+    get_genai_client()
 
     if test_config is None:
-        app.config.from_pyfile("config.py", silent=True)
+        app.config.from_pyfile('../config.py')
 
     else:
         app.config.from_mapping(test_config)
