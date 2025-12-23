@@ -27,7 +27,7 @@ dependencies= [
 ]
 
 [project.scripts]
-runapp-picto = "pictovector.index:app"
+runapp-picto = "index:app"
 
 [project.urls]
 Repository = "https://github.com/IlamaranMagesh/pictovector"
