@@ -2,8 +2,8 @@
 
 This fun little project was developed for one of the LabLab.ai's hackathon.
 
-[!IMPORTANT]
-Vercel's free tier requires the build file to be at max 250 MB but since we
+> [!IMPORTANT]
+> Vercel's free tier requires the build file to be at max 250 MB but since we
 use local models (Huggingface, pytorch) the file goes beyond the limit.
 In order to work in vercel, you need paid tier.
 
@@ -61,16 +61,16 @@ Python, Flask, HuggingFace, GeminiAPI, Qdrant, Hatch
   2. Google embeddings (Gemini API) - Text embeddings
   3. Microsoft/resnet-50 (HuggingFace) - Image embeddings
 
-[!NOTE]
-We could've avoided two embeddings using multimodal models like
+> [!NOTE]
+> We could've avoided two embeddings using multimodal models like
 OpenAI's Clip but as this is a hackathon project we had to use gemini api,
 and it was fun implementing a different approach.
 
 ### Serve:
 Vercel
 
-[!NOTE]
-Vercel is not linked to this repository.
+> [!NOTE]
+> Vercel is not linked to this repository.
 
 ## Developed by:
 
