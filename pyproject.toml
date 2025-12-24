@@ -9,7 +9,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 license = {text = "MIT"}
 authors = [
-    {name = "Uroj Ashfa", github = "https://github.com/UroojAshfa", role = "Frontend Development"},
+    {name = "Urooj Ashfaq", github = "https://github.com/UroojAshfa", role = "Frontend Development"},
     {name = "Maran", github = "https://github.com/IlamaranMagesh", role = "Backend Development"}
 ]
 dependencies= [

@@ -63,7 +63,7 @@ Python, Flask, HuggingFace, GeminiAPI, Qdrant, Hatch
 
 [!NOTE]
 We could've avoided two embeddings using multimodal models like
-OpenAI's Clip but as this is an hackathon project we had to use gemini api
+OpenAI's Clip but as this is a hackathon project we had to use gemini api,
 and it was fun implementing a different approach.
 
 ### Serve:
@@ -74,5 +74,5 @@ Vercel is not linked to this repository.
 
 ## Developed by:
 
-* **Frontend** - [Uroj Ashfa](https://github.com/UroojAshfa)
+* **Frontend** - [Urooj Ashfaq](https://github.com/UroojAshfa)
 * **Backend** - [Ilamaran Magesh](https://github.com/IlamaranMagesh)
