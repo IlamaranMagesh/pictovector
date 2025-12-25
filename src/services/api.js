@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://pictovector-lovat.vercel.app/api';
+const API_BASE_URL = '/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -45,13 +45,13 @@ export const imagesAPI = {
     });
   },
   getAll: (params, config = {}) => api.get('/images', { params, ...config }),
-  getById: (id, config = {}) => api.get(`/images/${id}`, config),
-  delete: (id, config = {}) => api.delete(`/images/${id}`, config),
+  getById: (id, config = {}) => api.get(`/images/${id}`, config), // Note: Not Implemented in frontend
+  delete: (id, config = {}) => api.delete(`/images/${id}`, config), // Note: Not Implemented in frontend
 };
 
 export const searchAPI = {
   search: (query, params = {}, config = {}) => {
-    const searchParams = typeof params === 'object' && !params.headers 
+    const searchParams = typeof params === 'object' && !params.headers
       ? { params: { query, ...params } }
       : { params: { query } };
     return api.get('/search', { ...searchParams, ...config });

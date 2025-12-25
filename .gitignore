@@ -36,3 +36,8 @@ __pycache__
 prompts.py
 playground.py
 
+#misc
+.notes
+
+#testing
+test

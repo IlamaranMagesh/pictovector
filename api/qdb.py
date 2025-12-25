@@ -1,10 +1,9 @@
 import time
 from qdrant_client.http.models import VectorParams, Distance, PointIdsList, MatchAny, Filter, FieldCondition
 from qdrant_client.qdrant_client import QdrantClient
-import uuid
 
 from .llm import LLM
-from config import IMAGE_EMBEDDING_SIZE, TEXT_EMBEDDING_SIZE, COLLECTION
+from .constants import IMAGE_EMBEDDING_SIZE, TEXT_EMBEDDING_SIZE, COLLECTION
 
 BASE_DELAY = 5
 
@@ -41,16 +40,16 @@ class Qdb:
         :return: None
         """
         time.sleep(BASE_DELAY)
-        # ToDo: Add exponential backoff and model switch
+        #ToDo: Add exponential backoff and model switch
         responses = model.image_to_caption(images=images)
 
         tags = [response["tags"] for response in responses]
         descriptions = [response["description"] for response in responses]
 
         image_embeddings = model.img_embed(images)
-        text_embeddings = model.txt_embed(descriptions)
+        text_embeddings = [model.txt_embed(descriptions)]
 
-        self.vectors = [{"image": image, "description": desc.values} for image, desc in
+        self.vectors = [{"image": image, "description": desc} for image, desc in
                         zip(image_embeddings, text_embeddings)]
         self.idx = [image.id for image in images]
         self.payloads = [{
@@ -153,6 +152,40 @@ class Qdb:
         except Exception as msg:
             print(msg)
 
+    def query_by_text(
+        self,
+        model: LLM,
+        query: str,
+        filters: list[str] | None = None,
+        limit: int = 5,
+    ) -> list[dict]:
+        """
+        Search similar images by dot product
+        :param model: LLM
+        :param query: str
+        :param filters: None | list[str]
+        :param limit: int
+        :return: list[dict]
+        """
+        vector = model.txt_embed([query])
+        try:
+            response = self.db_client.query_points(
+                collection_name=COLLECTION,
+                query=vector,
+                using="description",
+                query_filter=self._parse_filter(filters),
+                limit=limit,
+            )
+            results = [{
+                "confidence": point.score,
+                "payload": point.payload,
+            } for point in response.points]
+
+            return results
+
+        except Exception as msg:
+            print(msg)
+
     def delete_points(self, uuids: list[str]):
         """
         Delete points by uuids
@@ -167,12 +200,13 @@ class Qdb:
                 ),
                 wait=True,
             )
-
+            return update_result
         except Exception as msg:
-            print(f"Delete Error:\n{msg}")
+            return f"Delete Error:\n{msg}"
+
 
     def delete_collection(self):
-        pass
+        ...
 
 
 
